@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Warehouse</title>
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+  <link th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg" >
+
+<div class="container text-center" >
+  <div class="row">
+    <div th:insert="~{header :: header}"></div>
+  </div>
+  <div class="row">
+    <div class="d-flex" id="wrapper">
+      <div th:insert="~{sider :: sider}"></div>
+      <div id="page-content-wrapper">
+        <!--  这个东西非常有意思，我把他放到文件夹里，似乎能找到，但是他不能include，被include的东西都得放根目录，不能引用放文件夹的，或者引用得是另外方式-->
+        <div>
+          <p>Warehouse</p>
+          <table class="table bg-white rounded shadow-sm  table-hover">
+            <thead>
+            <tr>
+              <th >ID</th>
+              <th>name</th>
+              <th>amount</th>
+              <th>check info</th>
+            </tr>
+            </thead>
+<!--            先搞取值，是怎么取过来一个表的所有值-->
+            <tbody>
+            <tr th:each="commo : ${commoList}">
+              <td th:text="${commo.id}">none-1</td>
+              <td th:text="${commo.name}">none-bread</td>
+              <td th:text="${commo.amount}">none-0</td>
+              <td>
+                <a th:href="@{'/CommodityInfo?commoID='+${commo.id}}">check info</a>
+<!--                <a href="#" th:onclick="'javascript:updateState('+${orderShipping.orderId}+',2);'" title="删除"><i class="fa fa-trash-o text-navy"></i></a>-->
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <td colspan="12">
+                <ul id="pageHTML" class="pagination pull-right"></ul>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div th:insert="~{footer :: footer}"></div>
+  </div>
+
+</div>
+
+<script>
+  var el = document.getElementById("wrapper");
+  var toggleButton = document.getElementById("menu-toggle");
+
+  toggleButton.onclick = function () {
+    el.classList.toggle("toggled");
+  };
+</script>
+
+</body>
+</html>

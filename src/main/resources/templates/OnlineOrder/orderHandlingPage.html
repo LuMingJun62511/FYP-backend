@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>specific commodity</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg" >
+
+<div class="container text-center" >
+    <div class="row">
+        <div th:insert="~{header :: header}"></div>
+    </div>
+    <div class="row">
+        <div class="d-flex" id="wrapper">
+            <div th:insert="~{sider :: sider}"></div>
+            <div id="page-content-wrapper">
+                <div>
+                    <p>handling question</p>
+                </div>
+
+                <div>
+                    <p>orders id is : 6d5</p>
+                </div>
+
+                <table class="table bg-white rounded shadow-sm table-hover">
+                    <tr>
+                        <td>commodity id</td>
+                        <td>commodity name</td>
+                        <td>commodity type</td>
+                        <td>amount</td>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>bread1</td>
+                        <td>bread</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>456</td>
+                        <td>meat1</td>
+                        <td>pork</td>
+                        <td>1</td>
+                    </tr>
+                </table>
+
+
+                <p>commodities are similar to those out of stock</p>
+                <table class="table bg-white rounded shadow-sm ">
+                    <tr>
+                        <td><img src ="icons/dice-1.svg" style="font-size: 2rem; color: cornflowerblue;"/> </td>
+                        <td><img src ="icons/dice-2.svg" style="font-size: 2rem; color: cornflowerblue;"/> </td>
+                        <td><img src ="icons/dice-3.svg" style="font-size: 2rem; color: cornflowerblue;"/> </td>
+                        <td><img src ="icons/dice-4.svg" style="font-size: 2rem; color: cornflowerblue;"/> </td>
+                        <td><img src ="icons/dice-5.svg" style="font-size: 2rem; color: cornflowerblue;"/> </td>
+                        <td><img src ="icons/dice-6.svg" style="font-size: 2rem; color: cornflowerblue;"/> </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div th:insert="~{footer :: footer}"></div>
+    </div>
+
+</div>
+
+<script>
+    var el = document.getElementById("wrapper");
+    var toggleButton = document.getElementById("menu-toggle");
+
+    toggleButton.onclick = function () {
+        el.classList.toggle("toggled");
+    };
+</script>
+
+</body>
+</html>

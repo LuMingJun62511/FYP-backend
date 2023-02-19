@@ -3,12 +3,11 @@ package com.example.fypTest.Controller;
 
 import com.example.fypTest.DAO.SmsShelfItemRepository;
 import com.example.fypTest.DAO.SmsShelfRepository;
+import com.example.fypTest.Model.SmsShelf;
 import com.example.fypTest.Model.SmsShelfItem;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,22 +16,22 @@ import java.util.List;
 public class ShelfController {
 
     @Resource
-    private SmsShelfItemRepository testShelfItems;
+    private SmsShelfItemRepository ShelfItems;
     @RequestMapping(value = "/ShelfManagement")
     public List<SmsShelfItem> getMatchedRows(){
-        return testShelfItems.findByShelf_IdEquals(10);
+        return ShelfItems.findByShelf_IdEquals(10);
     }
 
     @Resource
-    private SmsShelfRepository testShelf;
-    @RequestMapping(value = "/ShelfBasicInfoRow")
-    public int getBasicInfoRow(){
-        return testShelf.findByIdEquals(10).getRowNum();
+    private SmsShelfRepository Shelf;
+    @RequestMapping(value = "/ShelfBasicInfo")
+    public SmsShelf getBasicInfo(){
+        return Shelf.findByIdEquals(10);
     }
-
-    @RequestMapping(value = "/ShelfBasicInfoCol")
-    public int getBasicInfoCol(){
-        return testShelf.findByIdEquals(10).getColNum();
+    @RequestMapping(value = "/shelfSaving")
+    public void saveShelf(@RequestBody List<SmsShelfItem> items){
+        SmsShelf shelf = items.get(0).getShelf();
+        ShelfItems.deleteById_ShelfIdEquals(shelf.getId());
+        ShelfItems.saveAll(items);
     }
-
 }

@@ -5,17 +5,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "sms_shelf_items")
 public class SmsShelfItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Integer id;
+    @EmbeddedId
+    private SmsShelfItemId id;
 
+    @MapsId("shelfId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "shelf_id", nullable = false)
     private SmsShelf shelf;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "abstract_product_id")
+    @MapsId("abstractProductId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "abstract_product_id", nullable = false)
     private PmsAbstractProduct abstractProduct;
 
     @Column(name = "position_row")
@@ -24,11 +24,11 @@ public class SmsShelfItem {
     @Column(name = "position_column")
     private Integer positionColumn;
 
-    public Integer getId() {
+    public SmsShelfItemId getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(SmsShelfItemId id) {
         this.id = id;
     }
 

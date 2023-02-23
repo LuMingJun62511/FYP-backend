@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 @RestController
-@RequestMapping(value = "/pms")
+@RequestMapping(value = "api/pms")
 public class ProductController {
     @Resource
     private PmsAbstractProductRepository testAbstractProduct;

@@ -1,22 +1,22 @@
 package com.example.fypTest.Model;
 
-public class User{
-    private String username;
-    private String password;
+public class User {
+    private String Username;
+    private String Password;
 
     public String getUsername() {
-        return username;
+        return Username;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        Username = username;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        Password = password;
     }
 }

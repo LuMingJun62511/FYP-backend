@@ -46,4 +46,9 @@ public class SmsShelfItemId implements Serializable {
         return Objects.hash(shelfId, abstractProductId);
     }
 
+    public SmsShelfItemId(Integer shelfId, Integer abstractProductId) {
+        this.shelfId = shelfId;
+        this.abstractProductId = abstractProductId;
+    }
+    public SmsShelfItemId(){}
 }

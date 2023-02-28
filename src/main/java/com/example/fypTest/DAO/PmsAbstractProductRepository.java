@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PmsAbstractProductRepository extends JpaRepository<PmsAbstractProduct, Integer> {
     List<PmsAbstractProduct> findByCategory_IdEquals(Integer id);
+
+    PmsAbstractProduct findFirstByIdEquals(Integer id);
 }

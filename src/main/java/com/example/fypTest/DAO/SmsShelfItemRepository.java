@@ -7,15 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SmsShelfItemRepository extends JpaRepository<SmsShelfItem, SmsShelfItemId> {
     @Query("select s from SmsShelfItem s where s.shelf.id = ?1")
     List<SmsShelfItem> findByShelf_IdEquals(Integer id);
     @Transactional
     void deleteById_ShelfIdEquals(Integer shelfId);
-
-
 
     SmsShelfItem findFirstById(SmsShelfItemId smsShelfItemId);
 }

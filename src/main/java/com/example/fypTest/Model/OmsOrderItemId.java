@@ -8,28 +8,20 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class SmsShelfItemId implements Serializable {
-    private static final long serialVersionUID = -5545783383176647935L;
-    @Column(name = "shelf_id", nullable = false)
-    private Integer shelfId;
+public class OmsOrderItemId implements Serializable {
+    private static final long serialVersionUID = -5582023193672943378L;
+    @Column(name = "order_id", nullable = false)
+    private Integer orderId;
 
     @Column(name = "abstract_product_id", nullable = false)
     private Integer abstractProductId;
 
-    public SmsShelfItemId() {
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public SmsShelfItemId(Integer shelfId, Integer abstractProductId) {
-        this.shelfId = shelfId;
-        this.abstractProductId = abstractProductId;
-    }
-
-    public Integer getShelfId() {
-        return shelfId;
-    }
-
-    public void setShelfId(Integer shelfId) {
-        this.shelfId = shelfId;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getAbstractProductId() {
@@ -44,15 +36,14 @@ public class SmsShelfItemId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        SmsShelfItemId entity = (SmsShelfItemId) o;
-        return Objects.equals(this.shelfId, entity.shelfId) &&
+        OmsOrderItemId entity = (OmsOrderItemId) o;
+        return Objects.equals(this.orderId, entity.orderId) &&
                 Objects.equals(this.abstractProductId, entity.abstractProductId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(shelfId, abstractProductId);
+        return Objects.hash(orderId, abstractProductId);
     }
-
 
 }

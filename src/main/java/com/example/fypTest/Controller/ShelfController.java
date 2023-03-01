@@ -45,31 +45,28 @@ public class ShelfController {
 //        所以，我这里得注释一下，不允许在货架上放置重复的货物，我觉得这样也挺合理的
     }
 
-    @RequestMapping(value = "/sortByCreated/{shelfID}/{row}/{column}")
+    @RequestMapping(value = "/sortByCreated/{shelfID}/{column}")
     public List<SmsShelfItem> sortByCreated(@RequestBody List<SmsTemp> temps,
                                             @PathVariable(value = "shelfID") int shelfID,
-                                            @PathVariable(value = "row") int row,
                                             @PathVariable(value = "column") int column){
         temps = allocateAttr(temps);
-        return sortTempsByCreated(temps,row,column,shelfID);
+        return sortTempsByCreated(temps,column,shelfID);
     }
 
-    @RequestMapping(value = "/sortBySales/{shelfID}/{row}/{column}")
+    @RequestMapping(value = "/sortBySales/{shelfID}/{column}")
     public List<SmsShelfItem> sortBySales(@RequestBody List<SmsTemp> temps,
                                           @PathVariable(value = "shelfID") int shelfID,
-                                          @PathVariable(value = "row") int row,
                                           @PathVariable(value = "column") int column){
         temps = allocateAttr(temps);
-        return sortTempsBySales(temps,row,column,shelfID);
+        return sortTempsBySales(temps,column,shelfID);
     }
 
-    @RequestMapping(value = "/sortByBBD/{shelfID}/{row}/{column}")
+    @RequestMapping(value = "/sortByBBD/{shelfID}/{column}")
     public List<SmsShelfItem> sortByBBD(@RequestBody List<SmsTemp> temps,
                                         @PathVariable(value = "shelfID") int shelfID,
-                                        @PathVariable(value = "row") int row,
                                         @PathVariable(value = "column") int column){
         temps = allocateAttr(temps);
-        return sortTempsByBBD(temps,row,column,shelfID);
+        return sortTempsByBBD(temps,column,shelfID);
     }
 
     public List<SmsTemp> allocateAttr(List<SmsTemp> temps) {
@@ -82,27 +79,17 @@ public class ShelfController {
         return temps;
     }
 
-    public List<SmsShelfItem> sortTempsBySales(List<SmsTemp> temps, int row, int column,int shelfID){
-//        Collections.sort(temps, new Comparator<SmsTemp>() {
-//            @Override
-//            public int compare(SmsTemp temp1, SmsTemp temp2) {
-//                return temp1.getSales().compareTo(temp2.getSales());
-//            }
-//        });
-        return shelfSort(temps,row,column,shelfID);
+    public List<SmsShelfItem> sortTempsBySales(List<SmsTemp> temps, int column,int shelfID){
+        temps.sort(Comparator.comparing(SmsTemp::getSales).reversed());//卖的多的放前面，也是逆序
+        return shelfSort(temps,column,shelfID);
     }
 
-    public List<SmsShelfItem> sortTempsByBBD(List<SmsTemp> temps, int row, int column,int shelfID){
-//        Collections.sort(temps, new Comparator<SmsTemp>() {
-//            @Override
-//            public int compare(SmsTemp temp1, SmsTemp temp2) {
-//                return temp1.getSales().compareTo(temp2.getSales());
-//            }
-//        });
-        return shelfSort(temps,row,column,shelfID);
+    public List<SmsShelfItem> sortTempsByBBD(List<SmsTemp> temps, int column,int shelfID){
+        temps.sort(Comparator.comparing(SmsTemp::getUrgent).reversed());//1为有，故逆序
+        return shelfSort(temps,column,shelfID);
     }
 
-    public List<SmsShelfItem> sortTempsByCreated(List<SmsTemp> temps, int row, int column,int shelfID){
+    public List<SmsShelfItem> sortTempsByCreated(List<SmsTemp> temps, int column,int shelfID){
         Collections.sort(temps, new Comparator<SmsTemp>() {
             @Override
             public int compare(SmsTemp temp1, SmsTemp temp2) {
@@ -110,24 +97,19 @@ public class ShelfController {
             }
 //关于这个函数可以再看看，有点高级哦
         });
-        return shelfSort(temps,row,column,shelfID);
+        return shelfSort(temps,column,shelfID);
 
     }
 
 
 
-    public List<SmsShelfItem> shelfSort(List<SmsTemp> temps, int row, int column,int shelfID){
+    public List<SmsShelfItem> shelfSort(List<SmsTemp> temps, int column,int shelfID){
         List<SmsShelfItem> res = new LinkedList<>();
 //        先不难为自己，假设是最多一行不满的正常货架， 而且考虑到排设顺序很一致
 //        是这样，因为在抽象货物那边掐断了，所以用abstractProductRepo查的效果并不好，不如用ShelfItems查的效果好
         for (int i = column; i<column*2; i++){
             SmsShelfItemId tId = new SmsShelfItemId(shelfID,temps.get(i).getId());
             res.add(ShelfItems.findFirstById(tId));
-//            PmsAbstractProduct p1 = abstractProductRepo.findFirstByIdEquals(temps.get(i).getId());
-//            p1.setP
-//            是这样的，因为我人工截断了死循环，所以我现在得额外查询了，得手动的
-//            优先把第二行放满
-//            res.add(p1);
         }
         for (int i = 0; i<column; i++){
             SmsShelfItemId tId = new SmsShelfItemId(shelfID,temps.get(i).getId());

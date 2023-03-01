@@ -13,8 +13,21 @@ public class PmsSpecificProduct {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "abstract_product_id", nullable = false)
-    @JsonIgnore      //所以，在find得实例的过程中，具体商品实例里就不会再有abstractProduct对象了
+    @JsonIgnore
     private PmsAbstractProduct abstractProduct;
+
+//    相比之前，这是新加的
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "batch_id", nullable = false)
+    private PmsBatch batch;
+
+    public PmsBatch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(PmsBatch batch) {
+        this.batch = batch;
+    }
 
     public Integer getId() {
         return id;

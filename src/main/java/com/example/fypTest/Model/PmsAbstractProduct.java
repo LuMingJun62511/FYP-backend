@@ -12,13 +12,8 @@ import java.util.Set;
 @Table(name = "pms_abstract_product")
 public class PmsAbstractProduct {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    private PmsProductCategory category;
 
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
@@ -47,35 +42,16 @@ public class PmsAbstractProduct {
     @Column(name = "is_urgent", nullable = false)
     private Integer isUrgent;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private PmsProductCategory category;
+
     @OneToMany(mappedBy = "abstractProduct")
+    @JsonIgnore
     private Set<PmsSpecificProduct> pmsSpecificProducts = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "abstractProduct")
     private Set<PmsBatch> pmsBatches = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "abstractProduct")
-    @JsonIgnore      //所以，在find得实例的过程中，抽象商品里就不会有在货架位置的信息了
-    private Set<SmsShelfItem> smsShelfItems = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "product")
-    @JsonIgnore      //所以，在find得实例的过程中，抽象商品里就不会有它被哪个用户收藏的信息了
-    private Set<UmsMemberProductRelation> umsMemberProductRelations = new LinkedHashSet<>();
-
-    public Set<UmsMemberProductRelation> getUmsMemberProductRelations() {
-        return umsMemberProductRelations;
-    }
-
-    public void setUmsMemberProductRelations(Set<UmsMemberProductRelation> umsMemberProductRelations) {
-        this.umsMemberProductRelations = umsMemberProductRelations;
-    }
-
-    public Set<SmsShelfItem> getSmsShelfItems() {
-        return smsShelfItems;
-    }
-
-    public void setSmsShelfItems(Set<SmsShelfItem> smsShelfItems) {
-        this.smsShelfItems = smsShelfItems;
-    }
 
     public Set<PmsBatch> getPmsBatches() {
         return pmsBatches;
@@ -93,20 +69,12 @@ public class PmsAbstractProduct {
         this.pmsSpecificProducts = pmsSpecificProducts;
     }
 
-    public Integer getIsUrgent() {
-        return isUrgent;
+    public PmsProductCategory getCategory() {
+        return category;
     }
 
-    public void setIsUrgent(Integer isUrgent) {
-        this.isUrgent = isUrgent;
-    }
-
-    public Integer getIsLow() {
-        return isLow;
-    }
-
-    public void setIsLow(Integer isLow) {
-        this.isLow = isLow;
+    public void setCategory(PmsProductCategory category) {
+        this.category = category;
     }
 
     public Integer getId() {
@@ -115,14 +83,6 @@ public class PmsAbstractProduct {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public PmsProductCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(PmsProductCategory category) {
-        this.category = category;
     }
 
     public BigDecimal getPrice() {
@@ -179,6 +139,22 @@ public class PmsAbstractProduct {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getIsLow() {
+        return isLow;
+    }
+
+    public void setIsLow(Integer isLow) {
+        this.isLow = isLow;
+    }
+
+    public Integer getIsUrgent() {
+        return isUrgent;
+    }
+
+    public void setIsUrgent(Integer isUrgent) {
+        this.isUrgent = isUrgent;
     }
 
 }

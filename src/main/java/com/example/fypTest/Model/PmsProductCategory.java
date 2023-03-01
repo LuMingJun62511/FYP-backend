@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "pms_product_category")
 public class PmsProductCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -22,17 +21,8 @@ public class PmsProductCategory {
     @Column(name = "product_count")
     private Integer productCount;
 
-    @Column(name = "product_unit", length = 64)
-    private String productUnit;
-
-    @Column(name = "sort")
-    private Integer sort;
-
     @Column(name = "icon")
     private String icon;
-
-    @Column(name = "keywords")
-    private String keywords;
 
     @Lob
     @Column(name = "description")
@@ -78,36 +68,12 @@ public class PmsProductCategory {
         this.productCount = productCount;
     }
 
-    public String getProductUnit() {
-        return productUnit;
-    }
-
-    public void setProductUnit(String productUnit) {
-        this.productUnit = productUnit;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
     public String getIcon() {
         return icon;
     }
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public String getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
     }
 
     public String getDescription() {

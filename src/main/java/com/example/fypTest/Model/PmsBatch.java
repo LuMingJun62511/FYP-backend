@@ -18,10 +18,9 @@ public class PmsBatch {
     @Column(name = "BBD")
     private Instant bbd;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "abstract_product_id", nullable = false)
-    @JsonIgnore      //所以，在find得实例的过程中，batch实例里就不会再有abstractProduct对象了
+    @JsonIgnore
     private PmsAbstractProduct abstractProduct;
 
     public Integer getId() {

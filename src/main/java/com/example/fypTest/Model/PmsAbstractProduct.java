@@ -24,6 +24,9 @@ public class PmsAbstractProduct {
     @Column(name = "low_stock")
     private Integer lowStock;
 
+    @Column(name = "to_be_outbound")
+    private Integer toBeOutbound;
+
     @Column(name = "pic")
     private String pic;
 
@@ -107,6 +110,14 @@ public class PmsAbstractProduct {
 
     public void setLowStock(Integer lowStock) {
         this.lowStock = lowStock;
+    }
+
+    public Integer getToBeOutbound() {
+        return toBeOutbound;
+    }
+
+    public void setToBeOutbound(Integer toBeOutbound) {
+        this.toBeOutbound = toBeOutbound;
     }
 
     public String getPic() {

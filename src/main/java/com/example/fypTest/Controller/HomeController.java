@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/test")
+@RequestMapping(value = "/api/home")
 public class HomeController {
 
     // 获取当前时间

@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface PmsAbstractProductRepository extends JpaRepository<PmsAbstractProduct, Integer> {
     List<PmsAbstractProduct> findByCategory_IdEquals(Integer id);
+//    @Query("SELECT p FROM PmsAbstractProduct p WHERE p.category.id = :categoryID AND p.id <> :productID")
+//    List<PmsAbstractProduct> findByCategory_IdEqualsAndIdNot(Integer categoryID, Integer productID);
 
     PmsAbstractProduct findFirstByIdEquals(Integer id);
     @Query("SELECT p FROM PmsAbstractProduct p WHERE p.category.id = :categoryID ORDER BY p.createdTime DESC")

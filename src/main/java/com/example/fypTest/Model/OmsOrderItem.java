@@ -44,6 +44,7 @@
 package com.example.fypTest.Model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "oms_order_item")
@@ -61,8 +62,11 @@ public class OmsOrderItem {
     @JoinColumn(name = "abstract_product_id", nullable = false)
     private PmsAbstractProduct abstractProduct;
 
-    @Column(name = "product_quantity")
-    private Integer productQuantity;
+    @Column(name = "amount")
+    private Integer amount;
+
+    @Column(name = "total_price", precision = 10, scale = 2)
+    private BigDecimal totalPrice;
 
     public OmsOrderItemId getId() {
         return id;
@@ -88,12 +92,19 @@ public class OmsOrderItem {
         this.abstractProduct = abstractProduct;
     }
 
-    public Integer getProductQuantity() {
-        return productQuantity;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public void setProductQuantity(Integer productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

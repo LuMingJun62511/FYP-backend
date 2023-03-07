@@ -1,7 +1,11 @@
 package com.example.fypTest.Controller;
 
 import com.example.fypTest.DAO.PmsAbstractProductRepository;
+import com.example.fypTest.DAO.PmsBatchRepository;
+import com.example.fypTest.DAO.PmsProductCategoryRepository;
 import com.example.fypTest.Model.PmsAbstractProduct;
+import com.example.fypTest.Model.PmsBatch;
+import com.example.fypTest.Model.PmsProductCategory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,9 +17,18 @@ import java.util.List;
 public class ProductController {
     @Resource
     private PmsAbstractProductRepository abstractProductRepo;
+    @Resource
+    private PmsProductCategoryRepository categoryRepo;
+    @Resource
+    private PmsBatchRepository batchRepo;
     @RequestMapping(value = "/productsByCategory/{categoryID}")
     public List<PmsAbstractProduct> getMatchedProducts(@PathVariable(value = "categoryID") int categoryID){
         return abstractProductRepo.findByCategory_IdEquals(categoryID);
+    }
+
+    @RequestMapping(value = "/productByID/{productID}")
+    public PmsAbstractProduct getProduct(@PathVariable(value = "productID") int productID){
+        return abstractProductRepo.findFirstByIdEquals(productID);
     }
 
     @RequestMapping(value = "/productsOfSimilarCategory/{productID}")
@@ -39,5 +52,14 @@ public class ProductController {
     @RequestMapping(value = "/findProductsBySale/{categoryID}")
     public List<PmsAbstractProduct> findBySale(@PathVariable(value = "categoryID") int categoryID){
         return abstractProductRepo.findAllByIdAndOrderBySale(categoryID);
+    }
+
+    @RequestMapping(value = "/findCategories")
+    public List<PmsProductCategory> findCategories(){
+        return categoryRepo.findAll();
+    }
+    @RequestMapping(value = "/findBatches/{productID}")
+    public List<PmsBatch> findBatches(@PathVariable(value = "productID") int productID){
+        return batchRepo.findByAbstractProduct_IdEquals(productID);
     }
 }

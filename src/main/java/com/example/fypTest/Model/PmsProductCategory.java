@@ -83,5 +83,4 @@ public class PmsProductCategory {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

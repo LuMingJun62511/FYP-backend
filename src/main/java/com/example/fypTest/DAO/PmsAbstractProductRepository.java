@@ -1,6 +1,7 @@
 package com.example.fypTest.DAO;
 
 import com.example.fypTest.Model.PmsAbstractProduct;
+import com.example.fypTest.Model.PmsBatch;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,4 +21,8 @@ public interface PmsAbstractProductRepository extends JpaRepository<PmsAbstractP
 
     @Query("SELECT p FROM PmsAbstractProduct p WHERE p.category.id = :categoryID ORDER BY p.sale DESC")
     List<PmsAbstractProduct> findAllByIdAndOrderBySale(Integer categoryID);
+
+
+
+
 }

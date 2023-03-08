@@ -3,14 +3,13 @@ package com.example.FYP_backend.Controller;
 import com.example.FYP_backend.DAO.PmsAbstractProductRepository;
 import com.example.FYP_backend.DAO.PmsBatchRepository;
 import com.example.FYP_backend.DAO.PmsProductCategoryRepository;
-import com.example.FYP_backend.Model.PmsAbstractProduct;
-import com.example.FYP_backend.Model.PmsBatch;
-import com.example.FYP_backend.Model.PmsProductCategory;
+import com.example.FYP_backend.Model.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
 import java.util.List;
 @RestController
 @RequestMapping(value = "api/pms")
@@ -62,4 +61,27 @@ public class ProductController {
     public List<PmsBatch> findBatches(@PathVariable(value = "productID") int productID){
         return batchRepo.findByAbstractProduct_IdEquals(productID);
     }
+
+    @RequestMapping(value = "/productDataForChart/{productID}")
+    public List<ChartOrderData> findProductDataForChart(@PathVariable(value = "productID") int productID){
+        List<ChartOrderData> dataList = new LinkedList<>();
+        for (int i = 0; i < 8; i++) {//8周
+            dataList.add(new ChartOrderData(i-7,0.0,0));
+        }
+
+        //然后在统计信息哪个表里找，id对的上的，还得是近段时间的，
+
+        return dataList;
+    }
+//    @RequestMapping("/orderDataForChart")
+//    public List<ChartOrderData> orderData() {
+//        List<PmsAbstractProductInfo> queryList = orderRepo.findAllByCreateTimeTwoMonthAgo(eightSettlementDateAgo);
+//        for (PmsAbstractProductInfo p: queryList) {
+//            int week = countWeeksBeforeNow(p.getCreateTime());
+//            ChartOrderData changed = dataList.get(7-week);
+//            changed.setSale(changed.getSale()+o.getPayAmount().doubleValue());
+//            changed.setAmount(changed.getAmount()+1);
+//        }
+//        return dataList;
+//    }
 }

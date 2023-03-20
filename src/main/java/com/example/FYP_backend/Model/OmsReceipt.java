@@ -12,7 +12,7 @@ public class OmsReceipt {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private UmsMember member;
 
     @Column(name = "coupon_id")
@@ -23,7 +23,7 @@ public class OmsReceipt {
     private OmsOrder order;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "receiver_id", nullable = false)
+    @JoinColumn(name = "receiver_id")
     private UmsMemberReceiveAddress receiver;
 
     @Column(name = "total_amount", precision = 10, scale = 2)

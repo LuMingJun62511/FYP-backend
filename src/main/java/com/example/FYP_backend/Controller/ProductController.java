@@ -1,9 +1,11 @@
 package com.example.FYP_backend.Controller;
 
 import com.example.FYP_backend.DAO.PmsAbstractProductRepository;
+import com.example.FYP_backend.DAO.PmsAbstractProductStatisticRepository;
 import com.example.FYP_backend.DAO.PmsBatchRepository;
 import com.example.FYP_backend.DAO.PmsProductCategoryRepository;
 import com.example.FYP_backend.Model.*;
+import com.example.FYP_backend.Utils.TimeUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,9 @@ public class ProductController {
     private PmsProductCategoryRepository categoryRepo;
     @Resource
     private PmsBatchRepository batchRepo;
+    @Resource
+    private PmsAbstractProductStatisticRepository productStatisticRepo;
+
     @RequestMapping(value = "/productsByCategory/{categoryID}")
     public List<PmsAbstractProduct> getMatchedProducts(@PathVariable(value = "categoryID") int categoryID){
         return abstractProductRepo.findByCategory_IdEquals(categoryID);
@@ -63,25 +68,24 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/productDataForChart/{productID}")
-    public List<ChartOrderData> findProductDataForChart(@PathVariable(value = "productID") int productID){
-        List<ChartOrderData> dataList = new LinkedList<>();
+    public List<ChartProductData> findProductDataForChart(@PathVariable(value = "productID") int productID){
+        List<PmsAbstractProductStatistic> queryList = productStatisticRepo.findAllByIdEquals(productID);
+        //先整好8个，
+        List<ChartProductData> dataList = new LinkedList<>();
         for (int i = 0; i < 8; i++) {//8周
-            dataList.add(new ChartOrderData(i-7,0.0,0));
+            dataList.add(new ChartProductData(i-7,0));
         }
+        //然后能对上week的就填一条
+        for (PmsAbstractProductStatistic p: queryList) {
 
-        //然后在统计信息哪个表里找，id对的上的，还得是近段时间的，
+            int week = TimeUtils.countWeeksBeforeNow(p.getSaleTime());
+            System.out.println(7-week);
+            ChartProductData changed = dataList.get(7-week);
+            changed.setAmount(changed.getAmount()+p.getAmount());
 
+        }
         return dataList;
     }
-//    @RequestMapping("/orderDataForChart")
-//    public List<ChartOrderData> orderData() {
-//        List<PmsAbstractProductInfo> queryList = orderRepo.findAllByCreateTimeTwoMonthAgo(eightSettlementDateAgo);
-//        for (PmsAbstractProductInfo p: queryList) {
-//            int week = countWeeksBeforeNow(p.getCreateTime());
-//            ChartOrderData changed = dataList.get(7-week);
-//            changed.setSale(changed.getSale()+o.getPayAmount().doubleValue());
-//            changed.setAmount(changed.getAmount()+1);
-//        }
-//        return dataList;
-//    }
+
+
 }

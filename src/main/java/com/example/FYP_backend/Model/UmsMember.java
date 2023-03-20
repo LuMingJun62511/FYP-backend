@@ -131,4 +131,10 @@ public class UmsMember {
         this.loyalPoints = loyalPoints;
     }
 
+    public UmsMember(Integer id) {
+        this.id = id;
+    }
+
+    public UmsMember() {
+    }
 }

@@ -4,6 +4,8 @@ import java.time.Instant;
 
 public class ChartProductData {
     private Instant weekBeginning;
+
+    private int week;
     private int productID;
     private int productName;
     private int amount;
@@ -47,5 +49,18 @@ public class ChartProductData {
 
     public void setSale(int sale) {
         this.sale = sale;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+    public ChartProductData(int week, int amount) {
+        this.week = week;
+        this.amount = amount;
     }
 }

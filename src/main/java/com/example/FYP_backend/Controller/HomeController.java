@@ -37,7 +37,7 @@ public class HomeController {
 
         List<OmsOrder> queryList = orderRepo.findAllByCreateTimeTwoMonthAgo(TimeUtils.getEightSettlementDateAgo());
         for (OmsOrder o: queryList) {
-            int week = TimeUtils.countWeeksBeforeNow(o.getCreateTime());
+            int week = TimeUtils.countWeeksBeforeDDay(o.getCreateTime());
             ChartOrderData changed = dataList.get(7-week);
             changed.setSale(changed.getSale()+o.getPayAmount().doubleValue());
             changed.setAmount(changed.getAmount()+1);

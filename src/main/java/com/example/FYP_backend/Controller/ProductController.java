@@ -77,8 +77,7 @@ public class ProductController {
         }
         //然后能对上week的就填一条
         for (PmsAbstractProductStatistic p: queryList) {
-
-            int week = TimeUtils.countWeeksBeforeNow(p.getSaleTime());
+            int week = TimeUtils.countWeeksBeforeDDay(p.getSaleTime());
             System.out.println(7-week);
             ChartProductData changed = dataList.get(7-week);
             changed.setAmount(changed.getAmount()+p.getAmount());

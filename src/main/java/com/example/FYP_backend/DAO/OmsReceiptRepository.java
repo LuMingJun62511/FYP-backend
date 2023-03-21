@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface OmsReceiptRepository extends JpaRepository<OmsReceipt, Integer> {
-    List<OmsReceipt> findAllByStatus(Integer status);
+    List<OmsReceipt> findAllByStatusEquals(Integer status);
+
+    OmsReceipt findOmsReceiptByIdEquals(Integer status);
 }

@@ -16,8 +16,6 @@ import java.time.*;
 import java.util.LinkedList;
 import java.util.List;
 
-
-
 @RestController
 @RequestMapping(value = "/api/home")
 public class HomeController {

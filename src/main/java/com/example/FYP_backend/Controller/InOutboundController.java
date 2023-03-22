@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -75,9 +74,4 @@ public class InOutboundController {
         receiptItem.setAmount(receiptItem.getAmount() - amount);
         receiptItemRepo.save(receiptItem);
     }
-
-
-
-
-
 }

@@ -12,4 +12,6 @@ public interface OmsReceiptItemRepository extends JpaRepository<OmsReceiptItem, 
 //    List<OmsReceiptItem> findAllByReceiptIn(List<Integer> ReceiptIDs);
 
     List<OmsReceiptItem> findById_ReceiptIdEquals(Integer receiptId);
+
+    OmsReceiptItem findByIdEquals(OmsReceiptItemId RIID);
 }

@@ -58,4 +58,12 @@ public class OmsReceiptItemId implements Serializable {
         return Objects.hash(productId, batchId, receiptId);
     }
 
+    public OmsReceiptItemId(Integer receiptId, Integer productId, Integer batchId) {
+        this.receiptId = receiptId;
+        this.productId = productId;
+        this.batchId = batchId;
+    }
+
+    public OmsReceiptItemId() {
+    }
 }

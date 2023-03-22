@@ -12,4 +12,6 @@ public interface PmsBatchRepository extends JpaRepository<PmsBatch, Integer> {
 
     @Query("SELECT b FROM PmsBatch b WHERE b.abstractProduct.id = :productID ORDER BY b.bbd")
     List<PmsBatch> findAllByIdAndOrderByBBD(Integer productID);
+
+    PmsBatch findByIdEquals(Integer id);
 }

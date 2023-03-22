@@ -16,33 +16,55 @@ import java.util.*;
 public class ShelfController {
 
     @Resource
-    private SmsShelfItemRepository ShelfItems;
+    private SmsShelfItemRepository shelfItemsRepo;
     @Resource
-    private SmsShelfRepository Shelf;
+    private SmsShelfRepository shelfRepo;
     @Resource
-    PmsAbstractProductRepository abstractProductRepo;
+    private PmsAbstractProductRepository abstractProductRepo;
 
     @RequestMapping(value = "/shelves")
     public List<SmsShelf> getAllShelves(){
-        return Shelf.findAll();
+        return shelfRepo.findAll();
     }
 
     @RequestMapping(value = "/shelfBasicInfo/{shelfID}")
     public SmsShelf getBasicInfo(@PathVariable(value = "shelfID") int shelfId){
-        return Shelf.findByIdEquals(shelfId);
+        return shelfRepo.findByIdEquals(shelfId);
     }
 
     @RequestMapping(value = "/getItems/{shelfID}")
     public List<SmsShelfItem> getItems(@PathVariable(value = "shelfID") int shelfId){
-        return ShelfItems.findByShelf_IdEquals(shelfId);
+        return shelfItemsRepo.findByShelf_IdEquals(shelfId);
     }
     @RequestMapping(value = "/itemsSaving")
-    public void saveShelf(@RequestBody List<SmsShelfItem> items){
+    public void saveItemsInShelf(@RequestBody List<SmsShelfItem> items){
         SmsShelf shelf = items.get(0).getShelf();
-        ShelfItems.deleteById_ShelfIdEquals(shelf.getId());
-        ShelfItems.saveAll(items);
+        shelfItemsRepo.deleteById_ShelfIdEquals(shelf.getId());
+        shelfItemsRepo.saveAll(items);
 //        由于主键的唯一性，所以，他把重复货架id和商品id的项直接给删除了，
 //        所以，我这里得注释一下，不允许在货架上放置重复的货物，我觉得这样也挺合理的
+    }
+
+    @RequestMapping(value = "/createOneShelf")
+    public void createOneShelf(@RequestBody SmsShelf shelf){
+        shelfRepo.save(shelf);
+    }
+
+    @RequestMapping(value = "/autoFillShelf")
+    public void autoFillShelf(@RequestBody SmsShelf shelf){//可能不太乐观，因为shelf型实体中含一个category，我传了个int
+        //取至多row*col，然后更新shelfItems
+        List<SmsShelfItem> res = new LinkedList<>();
+        List<PmsAbstractProduct> productList = abstractProductRepo.findByCategory_IdEquals(shelf.getCategoryId()).subList(0,shelf.getColNum()*shelf.getRowNum());
+        for (PmsAbstractProduct p:productList){
+            res.add(new SmsShelfItem(
+                    new SmsShelfItemId(shelf.getId(),p.getId()),
+                    shelf,
+                    p,
+                    shelf.getRowNum(),
+                    shelf.getColNum()
+            ));
+        }
+        shelfItemsRepo.saveAll(res);
     }
 
     @RequestMapping(value = "/sortByCreated/{shelfID}/{column}")
@@ -109,16 +131,16 @@ public class ShelfController {
 //        是这样，因为在抽象货物那边掐断了，所以用abstractProductRepo查的效果并不好，不如用ShelfItems查的效果好
         for (int i = column; i<column*2; i++){
             SmsShelfItemId tId = new SmsShelfItemId(shelfID,temps.get(i).getId());
-            res.add(ShelfItems.findFirstById(tId));
+            res.add(shelfItemsRepo.findFirstById(tId));
         }
         for (int i = 0; i<column; i++){
             SmsShelfItemId tId = new SmsShelfItemId(shelfID,temps.get(i).getId());
-            res.add(ShelfItems.findFirstById(tId));
+            res.add(shelfItemsRepo.findFirstById(tId));
 //            再把第一行放满
         }
         for (int i = column*2; i<temps.size(); i++){
             SmsShelfItemId tId = new SmsShelfItemId(shelfID,temps.get(i).getId());
-            res.add(ShelfItems.findFirstById(tId));
+            res.add(shelfItemsRepo.findFirstById(tId));
 //            最后把剩下的放满
         }
         return res;

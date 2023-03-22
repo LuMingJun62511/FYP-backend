@@ -40,7 +40,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/updateOrderStatus")
-    public void updateStatus(@RequestBody List<Integer> orderIds){
+    public void updateOrdersStatus(@RequestBody List<Integer> orderIds){
         List<OmsOrder> res = orderRepo.findAllByIdIn(orderIds);
         for (OmsOrder order:res){
             order.setStatus(1);
@@ -49,6 +49,15 @@ public class OrderController {
         //分两步走，先取出，再全改再全存
     }
 
+    @RequestMapping(value = "/updateReceiptStatus")
+    public void updateReceiptsStatus(@RequestBody List<Integer> receiptIds){
+        List<OmsReceipt> res = receiptRepo.findAllByIdIn(receiptIds);
+        for (OmsReceipt receipt:res){
+            receipt.setStatus(1);
+        };
+        receiptRepo.saveAll(res);
+        //分两步走，先取出，再全改再全存
+    }
     @RequestMapping(value = "/receiptsSaving")
     public void saveReceipts(@RequestBody List<OmsReceipt> receipts){
         receiptRepo.saveAll(receipts);

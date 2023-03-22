@@ -168,4 +168,10 @@ public class PmsAbstractProduct {
         this.isUrgent = isUrgent;
     }
 
+    public PmsAbstractProduct(Integer id) {
+        this.id = id;
+    }
+
+    public PmsAbstractProduct() {
+    }
 }

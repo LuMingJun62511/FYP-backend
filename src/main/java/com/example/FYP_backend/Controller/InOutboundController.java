@@ -21,7 +21,7 @@ public class InOutboundController {
     @Resource
     OmsReceiptItemRepository receiptItemRepo;
 
-    @RequestMapping(value = "/unhandledReceipts")
+    @RequestMapping(value = "/notFinishedReceipts")
     public List<OmsReceipt> getReceipts(){
         return receiptRepo.findAllByStatusEquals(0);//返回所有未发货单子
     }
@@ -36,12 +36,9 @@ public class InOutboundController {
         return receiptRepo.findOmsReceiptByIdEquals(receiptID);
     }
 
-    @RequestMapping(value = "/receiptItems")
-    public List<OmsReceiptItem> getReceiptItems(@RequestBody List<OmsReceipt> receipts){
-        List<Integer> queryList = new LinkedList<>();
-        for (OmsReceipt r:receipts) {
-            queryList.add(r.getId());
-        }
-        return receiptItemRepo.findAllByReceiptIn(queryList);
+    @RequestMapping(value = "/receiptItemsByReceiptId/{receiptID}")
+    public List<OmsReceiptItem> getReceiptItemsByRId(@PathVariable(value = "receiptID") int receiptID){
+        return receiptItemRepo.findById_ReceiptIdEquals(receiptID);
     }
+
 }

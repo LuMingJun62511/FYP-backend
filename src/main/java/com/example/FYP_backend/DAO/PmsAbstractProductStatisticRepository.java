@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PmsAbstractProductStatisticRepository extends JpaRepository<PmsAbstractProductStatistic, Integer> {
     List<PmsAbstractProductStatistic> findAllByIdEquals(Integer id);
+
+
 }

@@ -64,4 +64,14 @@ public class SmsShelfItem {
         this.positionColumn = positionColumn;
     }
 
+    public SmsShelfItem() {
+    }
+
+    public SmsShelfItem(SmsShelfItemId id, SmsShelf shelf, PmsAbstractProduct abstractProduct, Integer positionRow, Integer positionColumn) {
+        this.id = id;
+        this.shelf = shelf;
+        this.abstractProduct = abstractProduct;
+        this.positionRow = positionRow;
+        this.positionColumn = positionColumn;
+    }
 }

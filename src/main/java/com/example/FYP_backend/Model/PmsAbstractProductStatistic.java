@@ -54,4 +54,12 @@ public class PmsAbstractProductStatistic {
         this.amount = amount;
     }
 
+    public PmsAbstractProductStatistic(PmsAbstractProduct product, Instant saleTime, Integer amount) {
+        this.product = product;
+        this.saleTime = saleTime;
+        this.amount = amount;
+    }
+
+    public PmsAbstractProductStatistic() {
+    }
 }

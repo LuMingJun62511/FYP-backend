@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface OmsReceiptItemRepository extends JpaRepository<OmsReceiptItem, OmsReceiptItemId> {
-    @Query("SELECT ri FROM OmsReceiptItem ri WHERE ri.receipt.id IN :ReceiptIDs")
-    List<OmsReceiptItem> findAllByReceiptIn(List<Integer> ReceiptIDs);
+//    @Query("SELECT ri FROM OmsReceiptItem ri WHERE ri.receipt.id IN :ReceiptIDs")
+//    List<OmsReceiptItem> findAllByReceiptIn(List<Integer> ReceiptIDs);
 
+    List<OmsReceiptItem> findById_ReceiptIdEquals(Integer receiptId);
 }

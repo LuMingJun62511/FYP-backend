@@ -7,6 +7,7 @@ import com.example.FYP_backend.DAO.PmsProductCategoryRepository;
 import com.example.FYP_backend.Model.*;
 import com.example.FYP_backend.Utils.TimeUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -83,6 +84,29 @@ public class ProductController {
             changed.setAmount(changed.getAmount()+p.getAmount());
         }
         return dataList;
+    }
+
+    @RequestMapping(value = "/updateProductStock")
+    public void updateProductStock(){
+        List<PmsAbstractProduct> products = abstractProductRepo.findAll();
+        for (PmsAbstractProduct product:products){
+            int saleAmount = product.getToBeOutbound();
+            if(saleAmount > 0){//不判断一下，就会搞出很多记录
+                product.setToBeOutbound(0);
+                product.setStock(product.getStock()-saleAmount);
+                updateProductStatistics(product.getId(),saleAmount);
+            }
+        };
+        abstractProductRepo.saveAll(products);
+    }
+
+    public void updateProductStatistics(int id, int saleAmount){
+        PmsAbstractProductStatistic ps = new PmsAbstractProductStatistic(
+                new PmsAbstractProduct(id),
+                TimeUtils.getDday(),//这里当然应该用现在时间，我暂时使用登陆日了，
+                saleAmount
+        );
+        productStatisticRepo.save(ps);
     }
 
 

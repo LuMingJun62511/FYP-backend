@@ -64,6 +64,15 @@ public class ShelfController {
                     shelf.getColNum()
             ));
         }
+        for (int i=0; i<productList.size();i++){
+            res.add(new SmsShelfItem(
+                    new SmsShelfItemId(shelf.getId(),productList.get(i).getId()),
+                    shelf,
+                    productList.get(i),
+                    i/shelf.getColNum()+1,
+                    i%shelf.getColNum()+1
+            ));
+        }
         shelfItemsRepo.saveAll(res);
     }
 

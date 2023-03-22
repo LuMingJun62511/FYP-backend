@@ -81,7 +81,6 @@ public class ProductController {
             System.out.println(7-week);
             ChartProductData changed = dataList.get(7-week);
             changed.setAmount(changed.getAmount()+p.getAmount());
-
         }
         return dataList;
     }

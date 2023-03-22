@@ -16,4 +16,7 @@ public interface OmsOrderRepository extends JpaRepository<OmsOrder, Integer> {
     @Query("SELECT o FROM OmsOrder o WHERE o.createTime >= :oneSettlementDateAgo")
     List<OmsOrder> findAllByCreateTimeThisWeek(@Param("oneSettlementDateAgo") Instant oneSettlementDateAgo);
 
+    @Query("SELECT o FROM OmsOrder o WHERE o.id IN :ids")
+    List<OmsOrder> findAllByIdIn(@Param("ids") List<Integer> ids);
+
 }

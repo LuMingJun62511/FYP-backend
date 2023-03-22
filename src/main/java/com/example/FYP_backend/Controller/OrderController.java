@@ -27,6 +27,8 @@ public class OrderController {
     OmsReceiptItemRepository receiptItemRepo;
     @Resource
     PmsBatchRepository batchRepo;
+    @Resource
+    PmsAbstractProductRepository productRepo;
 
     @RequestMapping(value = "/ordersThisWeek")
     public List<OmsOrder> getOrdersThisWeek(){
@@ -37,28 +39,39 @@ public class OrderController {
         return orderItemRepo.findByOrder_Id(orderID);
     }
 
+    @RequestMapping(value = "/updateOrderStatus")
+    public void updateStatus(@RequestBody List<Integer> orderIds){
+        List<OmsOrder> res = orderRepo.findAllByIdIn(orderIds);
+        for (OmsOrder order:res){
+            order.setStatus(1);
+        };
+        orderRepo.saveAll(res);
+        //分两步走，先取出，再全改再全存
+    }
+
     @RequestMapping(value = "/receiptsSaving")
     public void saveReceipts(@RequestBody List<OmsReceipt> receipts){
-        for (OmsReceipt o:receipts) {
-            System.out.println("难道id真的空");
-            System.out.println(o.getId());
-        }
         receiptRepo.saveAll(receipts);
     }
 
-    @RequestMapping(value = "/receiptItemsSaving")
+    @RequestMapping(value = "/receiptItemsSaving")//这个函数，其实是负责把类似orderItem的东西通过赋予batchId,让他与具体货物对应，总共有三个功能，可以在service层中重构，我在这里就不改了
     public void saveReceiptItems(@RequestBody List<OmsReceiptItem> items){
+        //这里其实是三个功能，第一，是修改batch，第二，是更新batch_id，第三，是以amountNeed去更新to_be_outbound
         List<OmsReceiptItem> result = new LinkedList<>();
         for (OmsReceiptItem item:items) {
-            //首先，整些batch,我这里只要能处理的，肯定不会缺货，我就放心大胆的用
             List<PmsBatch> batches = batchRepo.findAllByIdAndOrderByBBD(item.getProduct().getId());
-            System.out.println(batches.size());
-            //这里其实是两个功能，应该拆开，第一，是batch扣除，第二，是标记batch_id，
-            BigDecimal singlePrice = item.getTotalPrice().divide(BigDecimal.valueOf(item.getAmount()));
+            //3更新to_be_outbound
+            PmsAbstractProduct product = productRepo.findFirstByIdEquals(item.getProduct().getId());
+            product.setToBeOutbound(product.getToBeOutbound()+item.getAmount());//我敢这么减，是因为我相信传进来的东西已经处理好了，没有问题了
+            productRepo.save(product);
+            //1修改batch
+            BigDecimal singlePrice = item.getTotalPrice().divide(BigDecimal.valueOf(item.getAmount()));//因为可能是强加的价格，所以要把单价这么搞
             int amountNeed = item.getAmount();
+
             for (PmsBatch batch: batches){
                 if(amountNeed != 0){
                     if(amountNeed > batch.getAmount()){//如果这一批不能覆盖，就生成一个，推到结果集
+                        //2更新batch_id
                         OmsReceiptItem itemAdded = new OmsReceiptItem(
                                 item.getId(),
                                 item.getReceipt(),
@@ -90,14 +103,6 @@ public class OrderController {
                 }
             }
             batchRepo.saveAll(batches);
-//            for (OmsReceiptItem i:result) {
-//                System.out.println("Receipt ID");
-//                System.out.println(i.getReceipt().getId());
-//                System.out.println("Product ID");
-//                System.out.println(i.getProduct().getId());
-//                System.out.println("amount");
-//                System.out.println(i.getAmount());
-//            }
             receiptItemRepo.saveAll(result);
         };
     }

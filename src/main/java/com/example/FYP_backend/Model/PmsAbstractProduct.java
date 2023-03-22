@@ -49,9 +49,9 @@ public class PmsAbstractProduct {
     @JoinColumn(name = "category_id", nullable = false)
     private PmsProductCategory category;
 
-    @OneToMany(mappedBy = "abstractProduct")
-    @JsonIgnore
-    private Set<PmsSpecificProduct> pmsSpecificProducts = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "abstractProduct")
+//    @JsonIgnore
+//    private Set<PmsSpecificProduct> pmsSpecificProducts = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "abstractProduct")
     private Set<PmsBatch> pmsBatches = new LinkedHashSet<>();
@@ -64,13 +64,13 @@ public class PmsAbstractProduct {
         this.pmsBatches = pmsBatches;
     }
 
-    public Set<PmsSpecificProduct> getPmsSpecificProducts() {
-        return pmsSpecificProducts;
-    }
-
-    public void setPmsSpecificProducts(Set<PmsSpecificProduct> pmsSpecificProducts) {
-        this.pmsSpecificProducts = pmsSpecificProducts;
-    }
+//    public Set<PmsSpecificProduct> getPmsSpecificProducts() {
+//        return pmsSpecificProducts;
+//    }
+//
+//    public void setPmsSpecificProducts(Set<PmsSpecificProduct> pmsSpecificProducts) {
+//        this.pmsSpecificProducts = pmsSpecificProducts;
+//    }
 
     public PmsProductCategory getCategory() {
         return category;

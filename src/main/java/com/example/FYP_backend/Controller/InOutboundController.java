@@ -26,8 +26,13 @@ public class InOutboundController {
     PmsAbstractProductRepository productRepo;
 
     @RequestMapping(value = "/notFinishedReceipts")
-    public List<OmsReceipt> getReceipts(){
+    public List<OmsReceipt> getNotFinishedReceipts(){
         return receiptRepo.findAllByStatusEquals(0);//返回所有未发货单子
+    }
+
+    @RequestMapping(value = "/toReturnReceipts")
+    public List<OmsReceipt> getToReturnReceipts(){
+        return receiptRepo.findAllByStatusEquals(2);//返回所有有退货的单子
     }
 
     @RequestMapping(value = "/allReceipts")
@@ -45,6 +50,23 @@ public class InOutboundController {
         return receiptItemRepo.findById_ReceiptIdEquals(receiptID);
     }
 
+    @RequestMapping(value = "/updateReceipt/{receiptID}")
+    public void updateReceipt(@PathVariable(value = "receiptID") int receiptID){
+        OmsReceipt receipt = receiptRepo.findOmsReceiptByIdEquals(receiptID);
+        receipt.setStatus(1);
+        receiptRepo.save(receipt);
+    }
+
+    @RequestMapping(value = "/updateProduct/{productId}/{amount}")
+    public void updateProduct(
+            @PathVariable(value = "productId") int productId,
+            @PathVariable(value = "amount") int amount
+    ){
+        PmsAbstractProduct product = productRepo.findFirstByIdEquals(productId);
+        product.setStock(product.getStock()+amount);
+        productRepo.save(product);
+    }
+
     @RequestMapping(value = "/updateBatch/{batchId}/{amount}")
     public void updateBatch(
             @PathVariable(value = "batchId") int batchId,
@@ -55,16 +77,6 @@ public class InOutboundController {
         batchRepo.save(batch);
     }
 
-    @RequestMapping(value = "/updateProduct/{productId}/{amount}")
-    public void updateProduct(
-            @PathVariable(value = "productId") int productId,
-            @PathVariable(value = "amount") int amount
-        ){
-        PmsAbstractProduct product = productRepo.findFirstByIdEquals(productId);
-        product.setStock(product.getStock()+amount);
-        productRepo.save(product);
-    }
-
     @RequestMapping(value = "/updateReceiptItems/{amount}")
     public void updateReceiptItems(
             @PathVariable(value = "amount") int amount,
@@ -72,6 +84,18 @@ public class InOutboundController {
         ){
         OmsReceiptItem receiptItem = receiptItemRepo.findByIdEquals(RIID);
         receiptItem.setAmount(receiptItem.getAmount() - amount);
+        receiptItem.setStatus(0);
         receiptItemRepo.save(receiptItem);
     }
+
+    @RequestMapping(value = "/productInfo/{productId}")
+    public PmsAbstractProduct productInfo(@PathVariable(value = "productId") int productId){
+        return productRepo.findFirstByIdEquals(productId);
+    }
+
+    @RequestMapping(value = "/batchInfo/{batchId}")
+    public PmsBatch batchInfo(@PathVariable(value = "batchId") int batchId){
+        return batchRepo.findByIdEquals(batchId);
+    }
+
 }

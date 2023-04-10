@@ -36,6 +36,10 @@ public class TimeUtils {
         return Dday;
     }
 
+    public static Instant aMonthDdayAgo(){
+        return Dday.minus(Duration.ofDays(30));
+    }
+
 
     public static int countWeeksBeforeDDay(Instant a) {
         Instant now = Instant.now();

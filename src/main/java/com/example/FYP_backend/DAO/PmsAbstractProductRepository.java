@@ -4,6 +4,7 @@ import com.example.FYP_backend.Model.PmsAbstractProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.Instant;
 import java.util.List;
 
 public interface PmsAbstractProductRepository extends JpaRepository<PmsAbstractProduct, Integer> {
@@ -23,5 +24,9 @@ public interface PmsAbstractProductRepository extends JpaRepository<PmsAbstractP
     @Query("SELECT p from PmsAbstractProduct p WHERE p.name LIKE %:name% ")
     List<PmsAbstractProduct> findAllByNameLike(String name);
 
+    @Query("SELECT p from PmsAbstractProduct p WHERE p.sale >= :sale")
+    List<PmsAbstractProduct> findAllBySaleGreaterThanEqual(Integer sale);
 
+    @Query("SELECT p from PmsAbstractProduct p WHERE p.createdTime >= :createdTime")//新品是一月内的,时间要大于1个月之前的哪个时间点
+    List<PmsAbstractProduct> findAllByCreatedTimeGreaterThanEqual(Instant createdTime);
 }

@@ -20,7 +20,8 @@ public interface PmsAbstractProductRepository extends JpaRepository<PmsAbstractP
     @Query("SELECT p FROM PmsAbstractProduct p WHERE p.category.id = :categoryID ORDER BY p.sale DESC")
     List<PmsAbstractProduct> findAllByIdAndOrderBySale(Integer categoryID);
 
-
+    @Query("SELECT p from PmsAbstractProduct p WHERE p.name LIKE %:name% ")
+    List<PmsAbstractProduct> findAllByNameLike(String name);
 
 
 }

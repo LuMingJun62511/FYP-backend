@@ -69,8 +69,8 @@ public class ProductController {
 
     @RequestMapping(value = "/productDataForChart/{productID}")
     public List<ChartProductData> findProductDataForChart(@PathVariable(value = "productID") int productID){
-        List<PmsAbstractProductStatistic> queryList = productStatisticRepo.findAllByIdEquals(productID);
-        //先整好8个，
+        List<PmsAbstractProductStatistic> queryList = productStatisticRepo.findAllByProductIdEquals(productID);
+        //先整好8个
         List<ChartProductData> dataList = new LinkedList<>();
         for (int i = 0; i < 8; i++) {//8周
             dataList.add(new ChartProductData(i-7,0));

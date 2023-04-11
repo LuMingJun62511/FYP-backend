@@ -1,9 +1,6 @@
 package com.example.FYP_backend.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ums_member_receive_address")
@@ -29,6 +26,18 @@ public class UmsMemberReceiveAddress {
 
     @Column(name = "city", length = 100)
     private String city;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private UmsMember member;
+
+    public UmsMember getMember() {
+        return member;
+    }
+
+    public void setMember(UmsMember member) {
+        this.member = member;
+    }
 
     public Integer getId() {
         return id;

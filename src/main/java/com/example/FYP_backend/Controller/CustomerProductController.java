@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/cp")
+@RequestMapping(value = "/api/cp")
 public class CustomerProductController {
     @Resource
     private PmsAbstractProductRepository abstractProductRepo;

@@ -26,4 +26,9 @@ public class CustomerUserController {
         addressRepo.save(address);
     }
 
+    @RequestMapping(value = "/deleteAddress/{id}")
+    public void deleteAddress(@PathVariable int id){
+        addressRepo.deleteById(id);
+    }
+
 }

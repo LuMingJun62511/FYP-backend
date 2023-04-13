@@ -19,4 +19,6 @@ public interface OmsOrderRepository extends JpaRepository<OmsOrder, Integer> {
     @Query("SELECT o FROM OmsOrder o WHERE o.id IN :ids")
     List<OmsOrder> findAllByIdIn(@Param("ids") List<Integer> ids);
 
+    List<OmsOrder> findAllByMemberId(Integer memberId);
+
 }

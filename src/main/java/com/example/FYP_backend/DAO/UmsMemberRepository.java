@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UmsMemberRepository extends JpaRepository<UmsMember, Integer> {
     UmsMember findByUsernameEquals(String username);
+
+    UmsMember findByIdEquals(Integer id);
 }

@@ -5,6 +5,7 @@ import com.example.FYP_backend.DAO.OmsOrderRepository;
 import com.example.FYP_backend.Model.OmsOrder;
 import com.example.FYP_backend.Model.OmsOrderItem;
 import com.example.FYP_backend.Model.PmsAbstractProduct;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,4 +31,27 @@ public class CustomerOrderController {
     public List<OmsOrderItem> orderItems(@PathVariable int orderID){
         return orderItemRepo.findByOrder_Id(orderID);
     }
+
+    @RequestMapping(value = "/generateOrderID")
+    public int generateOrderID(){
+        List<OmsOrder> orders = orderRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        if (orders.isEmpty()) {
+            return 1;
+        } else {
+            return orders.get(0).getId() + 1;
+        }
+    }
+
+    @RequestMapping(value = "/saveOrder")
+    public void saveOrder(@RequestBody OmsOrder order){
+        orderRepo.save(order);
+    }
+
+    @RequestMapping(value = "/saveOrderItems")
+    public void saveOrderItems(@RequestBody List<OmsOrderItem> orderItems){
+        orderItemRepo.saveAll(orderItems);
+    }
+
+
+
 }

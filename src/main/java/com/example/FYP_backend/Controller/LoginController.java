@@ -9,11 +9,13 @@ import com.example.FYP_backend.Model.UmsStoreOwner;
 import com.example.FYP_backend.Model.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
 @RestController
+@RequestMapping(value = "/api")
 public class LoginController {
     @Resource
     private UmsStoreOwnerRepository storeOwnerRepo;

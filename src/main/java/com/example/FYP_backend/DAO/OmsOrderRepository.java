@@ -20,5 +20,5 @@ public interface OmsOrderRepository extends JpaRepository<OmsOrder, Integer> {
     List<OmsOrder> findAllByIdIn(@Param("ids") List<Integer> ids);
 
     List<OmsOrder> findAllByMemberId(Integer memberId);
-
+    
 }

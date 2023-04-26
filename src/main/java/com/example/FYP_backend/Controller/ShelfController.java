@@ -50,6 +50,12 @@ public class ShelfController {
         shelfRepo.save(shelf);
     }
 
+    @RequestMapping(value = "/deleteShelf/{shelfID}")
+    public void deleteShelf(@PathVariable(value = "shelfID") int shelfId){
+        shelfItemsRepo.deleteById_ShelfIdEquals(shelfId);
+        shelfRepo.deleteById(shelfId);
+    }
+
     @RequestMapping(value = "/autoFillShelf")
     public void autoFillShelf(@RequestBody SmsShelf shelf){//可能不太乐观，因为shelf型实体中含一个category，我传了个int
         //取至多row*col，然后更新shelfItems

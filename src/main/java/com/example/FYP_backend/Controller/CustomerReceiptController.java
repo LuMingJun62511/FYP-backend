@@ -32,6 +32,12 @@ public class CustomerReceiptController {
     }
     @RequestMapping(value = "/returnItem")
     public void returnItem(@RequestBody OmsReceiptItem receiptItem){
+//        也得把对应的receipt的状态改了
+        OmsReceipt receipt = receiptRepo.findOmsReceiptByIdEquals(receiptItem.getId().getReceiptId());
+        receipt.setStatus(2);
+        receiptRepo.save(receipt);
+
+
         OmsReceiptItem toBeChanged = receiptItemRepo.findByIdEquals(receiptItem.getId());
 //        System.out.println(toBeChanged.getAmount());
 //        System.out.println(toBeChanged.getId().getReceiptId());

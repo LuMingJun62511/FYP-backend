@@ -83,9 +83,13 @@ public class InOutboundController {
             @RequestBody OmsReceiptItemId RIID
         ){
         OmsReceiptItem receiptItem = receiptItemRepo.findByIdEquals(RIID);
-        receiptItem.setAmount(receiptItem.getAmount() - amount);
-        receiptItem.setStatus(0);
-        receiptItemRepo.save(receiptItem);
+        if(receiptItem.getAmount() == amount){
+            receiptItemRepo.delete(receiptItem);
+        }else {
+            receiptItem.setAmount(receiptItem.getAmount() - amount);
+            receiptItem.setStatus(0);
+            receiptItemRepo.save(receiptItem);
+        }
     }
 
     @RequestMapping(value = "/productInfo/{productId}")
@@ -96,6 +100,13 @@ public class InOutboundController {
     @RequestMapping(value = "/batchInfo/{batchId}")
     public PmsBatch batchInfo(@PathVariable(value = "batchId") int batchId){
         return batchRepo.findByIdEquals(batchId);
+    }
+
+    @RequestMapping(value = "/denyReturn")
+    public void denyReturn(@RequestBody OmsReceiptItemId RIID){
+        OmsReceiptItem receiptItem = receiptItemRepo.findByIdEquals(RIID);
+        receiptItem.setStatus(0);
+        receiptItemRepo.save(receiptItem);
     }
 
 }

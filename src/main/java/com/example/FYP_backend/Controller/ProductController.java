@@ -26,8 +26,20 @@ public class ProductController {
     private PmsAbstractProductStatisticRepository productStatisticRepo;
 
     @RequestMapping(value = "/productsByCategory/{categoryID}")
-    public List<PmsAbstractProduct> getMatchedProducts(@PathVariable(value = "categoryID") int categoryID){
+    public List<PmsAbstractProduct> getMatchedProductsByCID(@PathVariable(value = "categoryID") int categoryID){
         return abstractProductRepo.findByCategory_IdEquals(categoryID);
+    }
+
+    @RequestMapping(value = "/productsByNameLike/{name}")
+    public List<PmsAbstractProduct> getMatchedProductsByName(@PathVariable(value = "name") String name){
+        return abstractProductRepo.findAllByNameLike(name);
+    }
+
+    @RequestMapping(value = "/productsByBoth/{categoryID}/{name}")
+    public List<PmsAbstractProduct> getMatchedProductsByBoth(
+            @PathVariable(value = "categoryID") int categoryID
+            ,@PathVariable(value = "name") String name){
+        return abstractProductRepo.findAllByCategory_IdEqualsAndNameLike(categoryID,name);
     }
 
     @RequestMapping(value = "/productByID/{productID}")

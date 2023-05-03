@@ -10,6 +10,9 @@ import java.util.List;
 public interface PmsAbstractProductRepository extends JpaRepository<PmsAbstractProduct, Integer> {
     List<PmsAbstractProduct> findByCategory_IdEquals(Integer id);
 
+    @Query("SELECT p from PmsAbstractProduct p WHERE p.category.id = :categoryID AND p.name LIKE %:name% ")
+    List<PmsAbstractProduct> findAllByCategory_IdEqualsAndNameLike(Integer categoryID, String name);
+
     PmsAbstractProduct findFirstByIdEquals(Integer id);
 
     @Query("SELECT p FROM PmsAbstractProduct p WHERE p.category.id = :categoryID ORDER BY p.createdTime DESC")

@@ -7,12 +7,14 @@ import com.example.FYP_backend.Model.UmsAdmin;
 import com.example.FYP_backend.Model.UmsMember;
 import com.example.FYP_backend.Model.UmsStoreOwner;
 import com.example.FYP_backend.Model.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -34,6 +36,8 @@ public class LoginController {
     }
 
 
+
+
     @PostMapping("/adminLogin")
     public boolean adminLogin(@RequestBody User user) {
         UmsAdmin admin = adminRepo.findByUsernameEquals(user.getUsername());
@@ -43,7 +47,24 @@ public class LoginController {
             return false;
         }
     }
+    @PostMapping("/ownerSignUp")
+    public void ownerSignUp(@RequestBody User user) {
+        int id = generateOwnerID();
+        UmsStoreOwner owner = new UmsStoreOwner();
+        owner.setId(id);
+        owner.setUsername(user.getUsername());
+        owner.setPassword(user.getPassword());
+        storeOwnerRepo.save(owner);
+    }
 
+    public int generateOwnerID(){
+        List<UmsStoreOwner> storeOwners = storeOwnerRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        if (storeOwners.isEmpty()) {
+            return 1;
+        } else {
+            return storeOwners.get(0).getId() + 1;
+        }
+    }
 }
 
 

@@ -19,8 +19,7 @@ import javax.annotation.Resource;
 public class LoginController {
     @Resource
     private UmsStoreOwnerRepository storeOwnerRepo;
-    @Resource
-    private UmsMemberRepository memberRepo;
+
     @Resource
     private UmsAdminRepository adminRepo;
 
@@ -33,15 +32,7 @@ public class LoginController {
             return false;
         }
     }
-    @PostMapping("/memberLogin")
-    public boolean userLogin(@RequestBody User user) {
-        UmsMember member = memberRepo.findByUsernameEquals(user.getUsername());
-        if (member != null) {
-            return member.getPassword().equals(user.getPassword());
-        }else {
-            return false;
-        }
-    }
+
 
     @PostMapping("/adminLogin")
     public boolean adminLogin(@RequestBody User user) {

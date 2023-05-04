@@ -108,6 +108,8 @@ public class ShelfController {
 
     public List<SmsTemp> allocateAttr(List<SmsTemp> temps) {
         for (SmsTemp temp:temps) {
+//            System.out.println("传回来的没问题吧");//没问题
+//            System.out.println(temp.getId());
             PmsAbstractProduct pt = abstractProductRepo.findFirstByIdEquals(temp.getId());
             temp.setUrgent(pt.getIsUrgent());
             temp.setCreated(Date.from(pt.getCreatedTime()));
@@ -139,26 +141,38 @@ public class ShelfController {
     }
 
 
-
+//所以问题在这里，根据结果上看，似乎只有现在在货架上的东西才能进行这一步排序，
     public List<SmsShelfItem> shelfSort(List<SmsTemp> temps, int column,int shelfID){
         List<SmsShelfItem> res = new LinkedList<>();
 //        先不难为自己，假设是最多一行不满的正常货架， 而且考虑到排设顺序很一致
-//        是这样，因为在抽象货物那边掐断了，所以用abstractProductRepo查的效果并不好，不如用ShelfItems查的效果好
+//        是这样，因为在抽象货物那边掐断了，所以用abstractProductRepo查的效果并不好，不如用ShelfItems查的效果好,但是这样就要考虑一下，如果它一开始不在货架上，那就出问题了
         for (int i = column; i<column*2; i++){
-            SmsShelfItemId tId = new SmsShelfItemId(shelfID,temps.get(i).getId());
-            res.add(shelfItemsRepo.findFirstById(tId));
+            SmsShelfItem t = generateItem(shelfID,temps.get(i).getId(),2,i%column+1);
+            res.add(t);
         }
         for (int i = 0; i<column; i++){
-            SmsShelfItemId tId = new SmsShelfItemId(shelfID,temps.get(i).getId());
-            res.add(shelfItemsRepo.findFirstById(tId));
 //            再把第一行放满
+            SmsShelfItem t = generateItem(shelfID,temps.get(i).getId(),1,i%column+1);
+            res.add(t);
         }
         for (int i = column*2; i<temps.size(); i++){
-            SmsShelfItemId tId = new SmsShelfItemId(shelfID,temps.get(i).getId());
-            res.add(shelfItemsRepo.findFirstById(tId));
 //            最后把剩下的放满
+//            这里的rowNum就要自己算了
+            int rowNum = (i-column*2)/column+3;
+            SmsShelfItem t = generateItem(shelfID,temps.get(i).getId(),rowNum,i%column+1);
+            res.add(t);
         }
         return res;
     }
 
+    public SmsShelfItem generateItem(int shelfID, int productID, int rowNum, int colNum) {
+        PmsAbstractProduct pt = abstractProductRepo.findFirstByIdEquals(productID);
+        return new SmsShelfItem(
+                new SmsShelfItemId(shelfID, productID),
+                shelfRepo.findFirstByIdEquals(shelfID),
+                pt,
+                rowNum,
+                colNum
+        );
+    }
 }

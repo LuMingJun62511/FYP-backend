@@ -10,4 +10,6 @@ public interface SmsShelfRepository extends JpaRepository<SmsShelf, Integer> {
     SmsShelf findByIdEquals(Integer id);
 
     List<SmsShelf> findAll();
+
+    SmsShelf findFirstByIdEquals(Integer id);
 }
